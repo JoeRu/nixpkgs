@@ -4,7 +4,7 @@
 
 stdenv.mkDerivation rec {
   pname = "leptonica";
-  version = "1.83.0";
+  version = "1.83.1";
 
   src = fetchurl {
     url = "http://www.leptonica.org/source/${pname}-${version}.tar.gz";
