@@ -1,34 +1,27 @@
-{ lib, buildPecl, fetchFromGitHub, writeText, libcouchbase, zlib, php, substituteAll }:
+{ lib, buildPecl, libcouchbase, zlib, cmake, pkg-config }:
 let
-  pname = "couchbase";
-  version = "3.2.2";
+  version = "4.1.4";
 in
 buildPecl {
-  inherit pname version;
+  pname = "couchbase";
 
-  src = fetchFromGitHub {
-    owner = "couchbase";
-    repo = "php-couchbase";
-    rev = "v${version}";
-    sha256 = "sha256-JpzLR4NcyShl2VTivj+15iAsTTsZmdMIdZYc3dLCbIA=";
-  };
+  inherit version;
+  sha256 = "sha256-gLp9urt/eidZB1Bxhuyye1WeZAgqIroa05zdEp04POU=";
 
   configureFlags = [ "--with-couchbase" ];
 
-  buildInputs = [ libcouchbase zlib ];
-
-  patches = [
-    (substituteAll {
-      src = ./libcouchbase.patch;
-      inherit libcouchbase;
-    })
+  nativeBuildInputs = [
+    cmake
+    pkg-config
   ];
 
-  meta = with lib; {
-    changelog = "https://github.com/couchbase/php-couchbase/releases/tag/v${version}";
+  buildInputs = [ libcouchbase zlib ];
+
+  meta = {
+    changelog = "https://pecl.php.net/package-info.php?package=couchbase&version=${version}";
     description = "Couchbase Server PHP extension";
-    license = licenses.asl20;
-    homepage = "https://docs.couchbase.com/php-sdk/current/project-docs/sdk-release-notes.html";
-    maintainers = teams.php.members;
+    homepage = "https://pecl.php.net/package/couchbase";
+    license = lib.licenses.asl20;
+    maintainers = lib.teams.php.members;
   };
 }
